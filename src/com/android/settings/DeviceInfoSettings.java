@@ -81,6 +81,8 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String PROPERTY_EQUIPMENT_ID = "ro.ril.fccid";
     private static final String KEY_DEVICE_FEEDBACK = "device_feedback";
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
+    private static final String KEY_CYOSP_VERSION = "cyosp_version";
+    private static final String KEY_CYOSP_PROP = "ro.cyosp.version";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -128,6 +130,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         setStringSummary(KEY_BUILD_NUMBER, Build.DISPLAY);
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(getFormattedKernelVersion());
+        setValueSummary(KEY_CYOSP_VERSION, KEY_CYOSP_PROP);
 
         if (!SELinux.isSELinuxEnabled()) {
             String status = getResources().getString(R.string.selinux_status_disabled);
@@ -510,4 +513,3 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         };
 
 }
-
