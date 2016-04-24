@@ -7040,5 +7040,7 @@
     <!-- About phone screen, cyosp version -->
     <string name="cyosp_version">cyosp version</string>
     <string name="cyosp_version_default">Unknown</string>
+    <string name="cyosp_changelog">cyosp changelog</string>
+    <string name="cyosp_changelog_missing">Missing changelog</string>
 
 </resources>

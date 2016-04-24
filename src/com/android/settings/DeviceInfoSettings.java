@@ -17,7 +17,9 @@
 package com.android.settings;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -47,8 +49,11 @@ import com.android.settings.search.Index;
 import com.android.settings.search.Indexable;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +89,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
     private static final String KEY_CYOSP_VERSION = "cyosp_version";
     private static final String KEY_CYOSP_PROP = "ro.cyosp.version";
+    private static final String KEY_CYOSP_CHANGELOG_PATH = "/system/etc/CHANGELOG-CY.txt";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -132,6 +138,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(getFormattedKernelVersion());
         setValueSummary(KEY_CYOSP_VERSION, KEY_CYOSP_PROP);
+        findPreference(KEY_CYOSP_VERSION).setEnabled(true);
 
         if (!SELinux.isSELinuxEnabled()) {
             String status = getResources().getString(R.string.selinux_status_disabled);
@@ -284,6 +291,38 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
             if (b.getBoolean(CarrierConfigManager.KEY_CI_ACTION_ON_SYS_UPDATE_BOOL)) {
                 ciActionOnSysUpdate(b);
             }
+        } else if (preference.getKey().equals(KEY_CYOSP_VERSION)) {
+            String message = new String (getResources().getString (R.string.cyosp_changelog_missing));
+            try {
+                // Read changelog from file
+                File file = new File (KEY_CYOSP_CHANGELOG_PATH);
+                FileInputStream is = null;
+                try {
+                    is = new FileInputStream(file);
+                    StringBuilder sb = new StringBuilder();
+                    int read = 0;
+                    byte[] data = new byte[512];
+                    while ((read = is.read(data, 0, 512)) != -1) {
+                        sb.append(new String(data, 0, read));
+                    }
+                    message = sb.toString ();
+                } catch (IOException ex) {
+                    Log.d(LOG_TAG, "IOException reading " + KEY_CYOSP_CHANGELOG_PATH);
+                } finally {
+                    if (is != null) {
+                        is.close();
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Log.d(LOG_TAG, "FileNotFoundException opening " + KEY_CYOSP_CHANGELOG_PATH);
+            } catch (IOException ex) {
+                Log.d(LOG_TAG, "IOException opening " + KEY_CYOSP_CHANGELOG_PATH);
+            }
+            Context context = getActivity().getWindow().getContext();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.cyosp_changelog);
+            builder.setMessage (message);
+            builder.show();
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
