@@ -56,6 +56,8 @@
     <string name="header_category_access">Access</string>
     <!-- Settings main menu category heading. System (Updates, data, accessibility, about phone). [CHAR LIMIT=40] -->
     <string name="header_category_system">System</string>
+    <!-- Settings main menu category heading. Additional settings (cyosp settingsm, UI_Tuner). [CHAR LIMIT=40] -->
+    <string name="header_category_additional">Additional settings</string>
 
     <!-- Phone info -->
     <!-- Phone Info screen. Button label to turn on the radio . Only shown in diagnostic screen, so precise translation is not needed. -->
@@ -7042,5 +7044,14 @@
     <string name="cyosp_version_default">Unknown</string>
     <string name="cyosp_changelog">cyosp changelog</string>
     <string name="cyosp_changelog_missing">Missing changelog</string>
+    <string name="cyosp_settings">cyosp settings</string>
+    <string name="cyosp_settings_title">cyosp settings</string>
+    <string name="keywords_cyosp">cyosp settings</string>
+    <string name="keywords_display_screen_off_animation">dim screen animation touchscreen battery</string>
+    <string name="screen_off_none">No animation</string>
+    <string name="screen_off_electron_beam">Electron Beam</string>
+    <string name="screen_off_fade">Fade out</string>
+    <string name="screen_off_animation">Screen off animation</string>
+    <string name="screen_off_animation_summary">Choose screen off animation</string>
 
 </resources>

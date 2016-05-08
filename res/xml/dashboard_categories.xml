@@ -210,6 +210,21 @@
 
     </dashboard-category>
 
+    <!-- Additional settings -->
+    <dashboard-category
+        android:id="@+id/additional_section"
+        android:key="@string/category_key_additional"
+        android:title="@string/header_category_additional" >
+
+        <!-- Date & Time -->
+        <dashboard-tile
+                android:id="@+id/cyosp_settings"
+                android:title="@string/cyosp_settings_title"
+                android:fragment="com.android.settings.cyospSettings"
+                />
+
+    </dashboard-category>
+
     <!-- SYSTEM -->
     <dashboard-category
         android:id="@+id/system_section"

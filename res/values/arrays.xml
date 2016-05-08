@@ -1389,4 +1389,24 @@
         <item>0</item>
     </string-array>
 
+    <!-- cyosp settings.  The off animation entries. -->
+    <string-array name="screen_off_animation_entries" translatable="false">
+        <!-- Do not translate. -->
+        <item>@string/screen_off_none</item>
+        <!-- Do not translate. -->
+        <item>@string/screen_off_electron_beam</item>
+        <!-- Do not translate. -->
+        <item>@string/screen_off_fade</item>
+    </string-array>
+
+    <!-- cyosp settings.  The off animation values. -->
+    <string-array name="screen_off_animation_values" translatable="false">
+        <!-- Do not translate. -->
+        <item>0</item>
+        <!-- Do not translate. -->
+        <item>1</item>
+        <!-- Do not translate. -->
+        <item>2</item>
+    </string-array>
+
 </resources>
