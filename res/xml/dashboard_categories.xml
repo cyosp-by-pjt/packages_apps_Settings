@@ -221,6 +221,7 @@
                 android:id="@+id/cyosp_settings"
                 android:title="@string/cyosp_settings_title"
                 android:fragment="com.android.settings.cyospSettings"
+                android:icon="@drawable/ic_settings_cyosp"
                 />
 
     </dashboard-category>
