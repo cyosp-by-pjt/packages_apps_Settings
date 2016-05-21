@@ -22,7 +22,7 @@ import com.android.settings.DropDownPreference.Callback;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
 
-//import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
+import static android.provider.Settings.System.SCREEN_OFF_ANIMATION;
 
 import android.app.Activity;
 import android.app.ActivityManagerNative;
@@ -57,7 +57,7 @@ public class cyospSettings extends SettingsPreferenceFragment implements
     private static final String TAG = "cyospSettings";
 
     /** If there is no setting in the provider, use this. */
-    private static final int FALLBACK_SCREEN_OFF_ANIMATION = 2; // Classic Electron Beam
+    private static final int FALLBACK_SCREEN_OFF_ANIMATION = 1; // Classic Electron Beam
 
     private static final String KEY_SCREEN_OFF_ANIMATION = "screen_off_animation";
 
@@ -80,13 +80,12 @@ public class cyospSettings extends SettingsPreferenceFragment implements
 
         addPreferencesFromResource(R.xml.cyosp_settings);
 
-        // mScreenTimeoutPreference = (ListPreference) findPreference(KEY_SCREEN_TIMEOUT);
-        // final long currentTimeout = Settings.System.getLong(resolver, SCREEN_OFF_TIMEOUT,
-        //         FALLBACK_SCREEN_TIMEOUT_VALUE);
-        // mScreenTimeoutPreference.setValue(String.valueOf(currentTimeout));
-        // mScreenTimeoutPreference.setOnPreferenceChangeListener(this);
-        // disableUnusableTimeouts(mScreenTimeoutPreference);
-        // updateTimeoutPreferenceDescription(currentTimeout);
+        mScreenOffAnimationPreference = (ListPreference) findPreference(KEY_SCREEN_OFF_ANIMATION);
+        final int currentAnimation = Settings.System.getInt(resolver, SCREEN_OFF_ANIMATION,
+                FALLBACK_SCREEN_OFF_ANIMATION);
+        mScreenOffAnimationPreference.setValue(String.valueOf(currentAnimation));
+        mScreenOffAnimationPreference.setOnPreferenceChangeListener(this);
+        updateScreenOffAnimationPreferenceDescription(currentAnimation);
 
         // mNightModePreference = (ListPreference) findPreference(KEY_NIGHT_MODE);
         // if (mNightModePreference != null) {
@@ -97,32 +96,25 @@ public class cyospSettings extends SettingsPreferenceFragment implements
         //     mNightModePreference.setOnPreferenceChangeListener(this);
         // }
     }
-    //
-    // private void updateTimeoutPreferenceDescription(long currentTimeout) {
-    //     ListPreference preference = mScreenTimeoutPreference;
-    //     String summary;
-    //     if (currentTimeout < 0) {
-    //         // Unsupported value
-    //         summary = "";
-    //     } else {
-    //         final CharSequence[] entries = preference.getEntries();
-    //         final CharSequence[] values = preference.getEntryValues();
-    //         if (entries == null || entries.length == 0) {
-    //             summary = "";
-    //         } else {
-    //             int best = 0;
-    //             for (int i = 0; i < values.length; i++) {
-    //                 long timeout = Long.parseLong(values[i].toString());
-    //                 if (currentTimeout >= timeout) {
-    //                     best = i;
-    //                 }
-    //             }
-    //             summary = preference.getContext().getString(R.string.screen_timeout_summary,
-    //                     entries[best]);
-    //         }
-    //     }
-    //     preference.setSummary(summary);
-    // }
+
+    private void updateScreenOffAnimationPreferenceDescription(int currentAnimation) {
+        ListPreference preference = mScreenOffAnimationPreference;
+        String summary;
+        if (currentAnimation < 0 || currentAnimation > 2) {
+            // Unsupported value
+            summary = "";
+        } else {
+            final CharSequence[] entries = preference.getEntries();
+            final CharSequence[] values = preference.getEntryValues();
+            if (entries == null || entries.length == 0) {
+                summary = "";
+            } else {
+                summary = preference.getContext().getString(R.string.screen_off_animation,
+                        entries[currentAnimation]);
+            }
+        }
+        preference.setSummary(summary);
+    }
 
     @Override
     public void onResume() {
@@ -155,15 +147,15 @@ public class cyospSettings extends SettingsPreferenceFragment implements
     @Override
     public boolean onPreferenceChange(Preference preference, Object objValue) {
         final String key = preference.getKey();
-        // if (KEY_SCREEN_TIMEOUT.equals(key)) {
-        //     try {
-        //         int value = Integer.parseInt((String) objValue);
-        //         Settings.System.putInt(getContentResolver(), SCREEN_OFF_TIMEOUT, value);
-        //         updateTimeoutPreferenceDescription(value);
-        //     } catch (NumberFormatException e) {
-        //         Log.e(TAG, "could not persist screen timeout setting", e);
-        //     }
-        // }
+        if (KEY_SCREEN_OFF_ANIMATION.equals(key)) {
+            try {
+                int value = Integer.parseInt((String) objValue);
+                Settings.System.putInt(getContentResolver(), SCREEN_OFF_ANIMATION, value);
+                updateScreenOffAnimationPreferenceDescription(value);
+            } catch (NumberFormatException e) {
+                Log.e(TAG, "could not persist screen off animation setting", e);
+            }
+        }
         // if (preference == mNightModePreference) {
         //     try {
         //         final int value = Integer.parseInt((String) objValue);
