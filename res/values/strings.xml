@@ -7052,6 +7052,7 @@
     <string name="screen_off_electron_beam">Electron Beam</string>
     <string name="screen_off_fade">Fade out</string>
     <string name="screen_off_animation">Screen off animation</string>
-    <string name="screen_off_animation_summary">Choose screen off animation</string>
+    <!-- cyosp settings screen, setting option summary displaying the currently selected off animation -->
+    <string name="screen_off_animation_summary" translatable="false">%1$s</string>
 
 </resources>

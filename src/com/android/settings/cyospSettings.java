@@ -109,7 +109,7 @@ public class cyospSettings extends SettingsPreferenceFragment implements
             if (entries == null || entries.length == 0) {
                 summary = "";
             } else {
-                summary = preference.getContext().getString(R.string.screen_off_animation,
+                summary = preference.getContext().getString(R.string.screen_off_animation_summary,
                         entries[currentAnimation]);
             }
         }
